@@ -29,3 +29,25 @@ TEST_CASE("reading matrix")
     
     REQUIRE( input == ostream.str() );
 }
+
+TEST_CASE("copying matrix")
+{
+    std::string input{
+        "3, 3\n"
+        "1 1 1\n"
+        "2 2 2\n"
+        "3 3 3" };
+    matrix_t matrix;
+    std::istringstream istream{ input };
+    
+    REQUIRE( matrix.read( istream ) );
+    
+    matrix_t copy( matrix );
+    REQUIRE( copy.rows() == 3 );
+    REQUIRE( copy.collumns() == 3 );
+    
+    std::ostringstream ostream;
+    copy.write( ostream );
+    
+    REQUIRE( input == ostream.str() );
+}
