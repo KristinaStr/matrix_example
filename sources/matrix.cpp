@@ -51,7 +51,7 @@ matrix_t::~matrix_t()
         {
             delete[] elements_[i];
         };
-        delete[] _;
+        delete[] elements_;
     
 }
 
