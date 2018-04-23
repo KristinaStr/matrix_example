@@ -70,6 +70,13 @@ matrix_t matrix_t::operator +( matrix_t const & other ) const
 {
 	assert (rows_ == other.rows_ && collumns_ == other.collumns_);
         matrix_t result;
+	result.elements_ = new float *[rows_];
+		for (std::size_t i = 0; i<rows_; i++) {
+			result.elements_[i] = new float [collumns_];
+		}
+		result.rows_ = rows_;
+		result.collumns_ = collumns_;
+	
         for (unsigned int i = 0; i < rows_; i++) 
 	{
             for (unsigned int j = 0; j < collumns_; j++) 
@@ -84,6 +91,13 @@ matrix_t matrix_t::operator -( matrix_t const & other ) const
 {
 	assert (rows_ == other.rows_ && collumns_ == other.collumns_);
         matrix_t result;
+	result.elements_ = new float *[rows_];
+		for (std::size_t i = 0; i < rows_; i++) {
+			result.elements_[i] = new float[collumns_];
+		}
+		result.rows_ = rows_;
+		result.collumns_ = collumns_;
+	
         for (unsigned int i = 0; i < rows_; i++) 
 	{
             for (unsigned int j = 0; j < collumns_; j++) 
@@ -99,6 +113,12 @@ matrix_t matrix_t::operator *( matrix_t const & other ) const
 {
 	assert (rows_ == other.collumns_ && collumns_ == other.rows_);
         matrix_t result;
+	result.rows_ = rows_;
+		result.collumns_ = other.collumns_;
+		result.elements_ = new float *[rows_];
+		for (std::size_t i = 0; i < rows_; ++i) {
+			result.elements_[i] = new float[other.collumns_];
+		}
         for (unsigned int i = 0; i < rows_; i++) 
 	{
             for (unsigned int j = 0; j < other.collumns_; j++) 
@@ -148,6 +168,13 @@ matrix_t & matrix_t::operator *=( matrix_t const & other )
 {
 	 assert (rows_ == other.collumns_ && collumns_ == other.rows_);
         matrix_t result;
+	result.rows_ = rows_;
+		result.collumns_ = other.collumns_;
+		result.elements_ = new float *[rows_];
+		for (std::size_t i = 0; i < rows_; ++i) {
+			result.elements_[i] = new float[other.collumns_];
+		}
+	
         for (unsigned int i = 0; i < rows_; i++) 
 	{
             for (unsigned int j = 0; j < other.collumns_; j++) 
