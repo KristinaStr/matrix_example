@@ -2,19 +2,55 @@
 
 matrix_t::matrix_t() : elements_{ nullptr }, rows_{ 0 }, collumns_{ 0 }
 {
+	
 }
 
 matrix_t::matrix_t( matrix_t const & other )
 {
+ matrix_t(matrix_t const &other) {
+        rows_ = other.rows_;
+        collumns_ = other.collumns_;
+        elements_ = new int *[rows_];
+        for (unsigned int i = 0; i < rows_; i++) 
+	{
+            elements_[i] = new int[collumns_];
+            for (unsigned int j = 0; j < collumns_; j++) 
+	    {
+                elements_[i][j] = other.elements_[i][j]
+	    }
+	}
+
 }
 
 matrix_t & matrix_t::operator =( matrix_t const & other )
 {
-	return *this;
+	for (unsigned int i = 0; i < rows_; i++)
+        {
+            delete[] elements_[i];
+        }
+        delete [] elements_;
+
+        rows_ = other.rows_;
+        collumns_ = other.collumns_;
+        elements_ = new int * [rows_];
+        for (std::size_t i = 0; i < rows_; i++) 
+	{
+            elements_[i] = new int [collumns_];
+            for (std::size_t j = 0; j < collumns_; j++)
+	    {
+                elements_[i][j] = other.elements_[i][j];
+            }
+        } 
 }
 
 matrix_t::~matrix_t()
 {
+	for (unsigned int i = 0; i < rows_; i++)
+        {
+            delete[] elements_[i];
+        };
+        delete[] _;
+    
 }
 
 std::size_t matrix_t::rows() const
@@ -28,38 +64,101 @@ std::size_t matrix_t::collumns() const
 }
 
 matrix_t matrix_t::operator +( matrix_t const & other ) const
+	
 {
-	matrix_t result;
-
+	assert (rows_ == other.rows_ && collumns_ == other.collumns_);
+        matrix_t result;
+        for (unsigned int i = 0; i < rows_; i++) 
+	{
+            for (unsigned int j = 0; j < collumns_; j++) 
+	    {
+                result.elements_[i][j] = elements_[i][j] + other.elements_[i][j];
+            }
+        }
 	return result;
 }
 
 matrix_t matrix_t::operator -( matrix_t const & other ) const
 {
-	matrix_t result;
+	assert (rows_ == other.rows_ && collumns_ == other.collumns_);
+        matrix_t result;
+        for (unsigned int i = 0; i < rows_; i++) 
+	{
+            for (unsigned int j = 0; j < collumns_; j++) 
+	    {
+                result.elements_[i][j] = elements_[i][j] - other.elements_[i][j];
+            }
+        }
 
 	return result;
 }
 
 matrix_t matrix_t::operator *( matrix_t const & other ) const
 {
-	matrix_t result;
-
-	return result;
+	assert (rows_ == other.collumns_ && collumns_ == other.rows_);
+        matrix_t result;
+        for (unsigned int i = 0; i < rows_; i++) 
+	{
+            for (unsigned int j = 0; j < other.collumns_; j++) 
+	    {
+                int res = 0;
+                for (unsigned int k = 0; k < collumns_; k++) 
+		{
+                    res += elements_[i][k] * other.elements_[k][j];
+                }
+                result.elements_[i][j] = res;
+            }
+        }
+        return result;
 }
 
 matrix_t & matrix_t::operator -=( matrix_t const & other )
 {
+	assert (rows_ == other.rows_ && collumns_ == other.collumns_);
+        matrix_t result;
+        for (unsigned int i = 0; i < rows_; i++) 
+	{
+            for (unsigned int j = 0; j < collumns_; j++) 
+	    {
+                 elements_[i][j] -= other.elements_[i][j];
+            }
+        }
+	
 	return *this;
 }
 
 matrix_t & matrix_t::operator +=( matrix_t const & other )
 {
+	assert (rows_ == other.rows_ && collumns_ == other.collumns_);
+        matrix_t result;
+        for (unsigned int i = 0; i < rows_; i++) 
+	{
+            for (unsigned int j = 0; j < collumns_; j++) 
+	    {
+                 elements_[i][j] += other.elements_[i][j];
+            }
+        }
 	return *this;
+	
 }
 
 matrix_t & matrix_t::operator *=( matrix_t const & other )
 {
+	 assert (rows_ == other.collumns_ && collumns_ == other.rows_);
+        matrix_t result;
+        for (unsigned int i = 0; i < rows_; i++) 
+	{
+            for (unsigned int j = 0; j < other.collumns_; j++) 
+	    {
+                int res = 0;
+                for (unsigned int k = 0; k < collumns_; k++) 
+		{
+                    res += elements_[i][k] * other.elements_[k][j];
+                }
+                result.elements_[i][j] = res;
+            }
+        }
+	*this= result;
 	return *this;
 }
 
