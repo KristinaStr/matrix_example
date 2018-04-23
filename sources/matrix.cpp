@@ -1,4 +1,5 @@
 #include "matrix.hpp"
+#include <assert.h>
 
 matrix_t::matrix_t() : elements_{ nullptr }, rows_{ 0 }, collumns_{ 0 }
 {
@@ -41,6 +42,7 @@ matrix_t & matrix_t::operator =( matrix_t const & other )
                 elements_[i][j] = other.elements_[i][j];
             }
         } 
+	return *this;
 }
 
 matrix_t::~matrix_t()
