@@ -7,16 +7,16 @@ matrix_t::matrix_t() : elements_{ nullptr }, rows_{ 0 }, collumns_{ 0 }
 
 matrix_t::matrix_t( matrix_t const & other )
 {
- matrix_t(matrix_t const &other) {
-        rows_ = other.rows_;
+	rows_ = other.rows_;
         collumns_ = other.collumns_;
         elements_ = new int *[rows_];
         for (unsigned int i = 0; i < rows_; i++) 
+		
 	{
             elements_[i] = new int[collumns_];
             for (unsigned int j = 0; j < collumns_; j++) 
 	    {
-                elements_[i][j] = other.elements_[i][j]
+                elements_[i][j] = other.elements_[i][j];
 	    }
 	}
 
@@ -224,3 +224,4 @@ std::ostream & matrix_t::write( std::ostream & stream ) const
     
 	return stream;
 }
+
