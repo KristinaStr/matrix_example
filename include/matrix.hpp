@@ -1,6 +1,9 @@
 #include <iostream>
 #include <cassert>
 #include <string>
+#include <stdexcept>
+
+
 
 template <typename T>
 class matrix_t {
@@ -71,70 +74,95 @@ public:
     }
 
     matrix_t<T> operator+(matrix_t<T> const &other) const {
-        assert (rows_ == other.rows_ && collumns_ == other.collumns_);
-        matrix_t result;
-        result.elements_ = new T *[rows_];
-        for (std::size_t i = 0; i < rows_; i++) {
-            result.elements_[i] = new T  [collumns_];
-        }
-        result.rows_ = rows_;
-        result.collumns_ = collumns_;
+        matrix_t<T> result;
+        if (rows_ == other.rows_ && collumns_ == other.collumns_) {
 
-        for (unsigned int i = 0; i < rows_; i++) {
-            for (unsigned int j = 0; j < collumns_; j++) {
-                result.elements_[i][j] = elements_[i][j] + other.elements_[i][j];
+            result.elements_ = new T *[rows_];
+            for (std::size_t i = 0; i < rows_; i++) {
+                result.elements_[i] = new T[collumns_];
             }
+            result.rows_ = rows_;
+            result.collumns_ = collumns_;
+
+            for (unsigned int i = 0; i < rows_; i++) {
+                for (unsigned int j = 0; j < collumns_; j++) {
+                    result.elements_[i][j] = elements_[i][j] + other.elements_[i][j];
+                }
+            }
+        }
+        else
+            {
+            throw std::logic_error("error size");
         }
         return result;
     }
 
     matrix_t<T> operator-(matrix_t<T> const &other) const {
-        assert (rows_ == other.rows_ && collumns_ == other.collumns_);
-        matrix_t result;
-        result.elements_ = new T *[rows_];
-        for (std::size_t i = 0; i < rows_; i++) {
-            result.elements_[i] = new T [collumns_];
-        }
-        result.rows_ = rows_;
-        result.collumns_ = collumns_;
+        matrix_t<T> result;
+        if (rows_ == other.rows_ && collumns_ == other.collumns_) {
+            result.elements_ = new T *[rows_];
+            for (std::size_t i = 0; i < rows_; i++) {
+                result.elements_[i] = new T[collumns_];
+            }
+            result.rows_ = rows_;
+            result.collumns_ = collumns_;
 
-        for (unsigned int i = 0; i < rows_; i++) {
-            for (unsigned int j = 0; j < collumns_; j++) {
-                result.elements_[i][j] = elements_[i][j] - other.elements_[i][j];
+            for (unsigned int i = 0; i < rows_; i++) {
+                for (unsigned int j = 0; j < collumns_; j++) {
+                    result.elements_[i][j] = elements_[i][j] - other.elements_[i][j];
+                }
             }
         }
+        else
+        {
+            throw std::logic_error("error size");
+        }
+
 
         return result;
     }
 
     matrix_t<T> operator*(matrix_t<T> const &other) const {
-        assert (rows_ == other.collumns_ && collumns_ == other.rows_);
-        matrix_t result;
-        result.rows_ = rows_;
-        result.collumns_ = other.collumns_;
-        result.elements_ = new  T *[rows_];
-        for (std::size_t i = 0; i < rows_; ++i) {
-            result.elements_[i] = new T  [other.collumns_];
-        }
-        for (unsigned int i = 0; i < rows_; i++) {
-            for (unsigned int j = 0; j < other.collumns_; j++) {
-                float res = 0;
-                for (unsigned int k = 0; k < collumns_; k++) {
-                    res += elements_[i][k] * other.elements_[k][j];
-                }
-                result.elements_[i][j] = res;
+        matrix_t<T> result;
+        if (rows_ == other.collumns_ && collumns_ == other.rows_) {
+            result.rows_ = rows_;
+            result.collumns_ = other.collumns_;
+            result.elements_ = new T *[rows_];
+            for (std::size_t i = 0; i < rows_; ++i) {
+                result.elements_[i] = new T[other.collumns_];
             }
+            for (unsigned int i = 0; i < rows_; i++) {
+                for (unsigned int j = 0; j < other.collumns_; j++) {
+                    float res = 0;
+                    for (unsigned int k = 0; k < collumns_; k++) {
+                        res += elements_[i][k] * other.elements_[k][j];
+                    }
+                    result.elements_[i][j] = res;
+                }
+            }
+            return result;
         }
-        return result;
+        else
+            {
+                throw std::logic_error("error size");
+
+            }
     }
 
 
     matrix_t<T> & operator-=(matrix_t<T> const &other) {
-        assert (rows_ == other.rows_ && collumns_ == other.collumns_);
-        for (unsigned int i = 0; i < rows_; i++) {
-            for (unsigned int j = 0; j < collumns_; j++) {
-                elements_[i][j] -= other.elements_[i][j];
+        if (rows_ == other.rows_ && collumns_ == other.collumns_) {
+
+
+            for (unsigned int i = 0; i < rows_; i++) {
+                for (unsigned int j = 0; j < collumns_; j++) {
+                    elements_[i][j] -= other.elements_[i][j];
+                }
             }
+        }
+        else
+        {
+            throw std:: logic_error("error size");
         }
 
         return *this;
@@ -143,20 +171,35 @@ public:
 
 
     matrix_t<T> & operator+=(matrix_t<T> const &other) {
-        assert (rows_ == other.rows_ && collumns_ == other.collumns_);
-        for (unsigned int i = 0; i < rows_; i++) {
-            for (unsigned int j = 0; j < collumns_; j++) {
-                elements_[i][j] += other.elements_[i][j];
+        if (rows_ == other.rows_ && collumns_ == other.collumns_) {
+            for (unsigned int i = 0; i < rows_; i++) {
+                for (unsigned int j = 0; j < collumns_; j++) {
+                    elements_[i][j] += other.elements_[i][j];
+                }
             }
         }
+        else
+         {
+             throw std:: logic_error("error size");
+         }
         return *this;
 
     }
 
 
 
-    matrix_t<T> & operator*=(matrix_t<T> const &other) {
-        return *this = *this * other;
+    matrix_t<T> & operator*=(matrix_t<T> const &other)
+
+    {
+        if (rows_ == other.collumns_ && collumns_ == other.rows_)
+        {
+            *this = *this * other;
+        }
+        else
+        {
+            throw std:: logic_error("error size");
+        }
+        return *this;
     }
 
     std::istream & read(std::istream &stream) {
@@ -218,4 +261,3 @@ public:
         return stream;
     }
 };
-
