@@ -294,7 +294,47 @@ TEST_CASE("Matrix SelfMul")
     REQUIRE( output == ostream.str() );
 }
 
+TEST_CASE("All is OK")
+{
+    std::string input1{
+        "3, 3\n"
+        "1 1 1\n"
+        "1 1 1\n"
+        "1 1 1" };
+     std::string input2{
+        "3, 3\n"
+        "2 2 2\n"
+        "2 2 2\n"
+        "2 2 2" };
+    matrix_t<int> matrix1 ;
+    matrix_t<int> matrix2 ;
     
+    std::istringstream istream1{ input1 };
+    std::istringstream istream2{ input2 };
+    
+    matrix1.read( istream1 ) ;
+    matrix2.read( istream2 ) ;
+    REQUIRE_NOTHROW ((matrix1 + matrix2));
+}
 
-
- 
+TEST_CASE("All is Not OK")
+{
+    std::string input1{
+        "3, 3\n"
+        "1 1 1\n"
+        "1 1 1\n"
+        "1 1 1" };
+     std::string input2{
+        "2, 2\n"
+        "2 2\n"
+        "2 2" };
+    matrix_t<int> matrix1 ;
+    matrix_t<int> matrix2 ;
+    
+    std::istringstream istream1{ input1 };
+    std::istringstream istream2{ input2 };
+    
+    matrix1.read( istream1 ) ;
+    matrix2.read( istream2 ) ;
+    REQUIRE_THROWS_AS ((matrix1 + matrix2), std::logic_error);
+}
